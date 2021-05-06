@@ -33,11 +33,11 @@ def delete(tabela, coluna, valor):
 
 def update(tabela, chave, valor_chave, colunas, vlr_coluna):
     sets = [f"{coluna} = %s" for coluna in colunas]
-    execute(f"""Update {tabela} SET{",".join(sets)} WHERE {chave} = %s""", vlr_coluna + [valor_chave])
+    execute(f"""Update {tabela} SET {",".join(sets)} WHERE {chave} = %s""", vlr_coluna + (valor_chave,))
 
 
-def select(tabela, chave=1, valor_chave=1, limit=100, offset=0):
-    return query(f"""SELECT * FROM  {tabela} WHERE {chave} = %s  LIMIT {limit} offset {offset}""", (valor_chave,))
+def select(tabela, chave=1, valor_chave=1, igual="1=1", limit=100, offset=0):
+    return query(f"""SELECT * FROM  {tabela} WHERE {chave} = %s LIKE {igual} LIMIT {limit} offset {offset}""", (valor_chave,))
 
 
 #query_holder = list((query("SELECT * FROM generos")))

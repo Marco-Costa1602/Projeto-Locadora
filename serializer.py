@@ -14,7 +14,7 @@ def genero_name_db(*args):
 ############################################################# Serializer - DIRETORES
 def diretor_name_web(**kwargs):
     return{
-        "nome_completo": kwargs if 'nome' in kwargs else ""
+        "nome_completo": kwargs["nome_completo"] if 'nome_completo' in kwargs else ""
     }
 
 

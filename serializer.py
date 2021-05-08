@@ -45,6 +45,32 @@ def filme_name_web(**kwargs):
     }
 
 
+<<<<<<< Updated upstream
+=======
+def diretor_name_db(diretor):
+    return{
+        "id": diretor["id"],
+        "nome_completo": diretor["nome_completo"],
+    }
+
+
+def nome_diretor_from_web(**kwargs):
+    return kwargs["nome_completo"] if "nome_completo" in kwargs else ""
+
+#############################################################
+############################################################# Serializer - FILMES
+def filme_name_web(**kwargs):
+    return{
+        "titulo": kwargs["titulo"] if 'titulo' in kwargs else "",
+        "ano": kwargs["ano"] if 'ano' in kwargs else "",
+        "classificacao": kwargs["classificacao"] if 'classificacao' in kwargs else "",
+        "preco": kwargs["preco"] if 'preco' in kwargs else "",
+        "diretores_id": kwargs["diretores_id"] if 'diretores_id' in kwargs else "",
+        "generos_id": kwargs["generos_id"] if "generos_id" in kwargs else ""
+    }
+
+
+>>>>>>> Stashed changes
 def filme_name_db(filme):
     return{
         "id": filme["id"],

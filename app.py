@@ -1,4 +1,8 @@
 from flask import Flask, jsonify, request
+<<<<<<< Updated upstream
+=======
+from main import query, execute
+>>>>>>> Stashed changes
 from serializer import genero_name_web, genero_name_db, diretor_name_web, diretor_name_db, nome_diretor_from_web, titulo_filme_from_web, filme_name_web, filme_name_db, usuario_from_web, usuario_from_db, nome_usuario_from_web, nome_genero_from_web
 from validacao import valida_genero, valida_diretor, valida_filme, valida_usuario
 from models import insert_genero, get_genero, select_genero, delete_genero, update_genero, get_diretor, select_diretor, insert_diretor, delete_diretor, update_diretor, select_filme, delete_fime, update_filme, get_filme, insert_filme, get_usuario, select_usuarios, delete_usuario, update_usuario, insert_usuario

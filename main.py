@@ -1,5 +1,5 @@
 from mysql.connector import connect
-
+from datetime import datetime
 CONFIGURACOES_BD = {
     "host": "localhost",
     "user": "root",

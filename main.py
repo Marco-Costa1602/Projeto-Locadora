@@ -1,5 +1,5 @@
 from mysql.connector import connect
-
+from datetime import datetime
 CONFIGURACOES_BD = {
     "host": "localhost",
     "user": "root",
@@ -39,9 +39,8 @@ def update(tabela, chave, valor_chave, colunas, vlr_coluna):
 def select(tabela, chave=1, valor_chave=1, limit=100, offset=0):
     return query(f"""SELECT * FROM {tabela} WHERE {chave} = %s LIMIT {limit} offset {offset}""", (valor_chave,))
 
-
 def select_like(tabela, chave=1, valor_chave=1, limit=100, offset=0):
     return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s LIMIT {limit} offset {offset}""", (f"%{valor_chave}%",))
 
-#query_holder = list((query("SELECT * FROM generos")))
-#print(query_holder)
+def select_like(tabela, chave=1, valor_chave=1, limit=100, offset=0):
+    return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s LIMIT {limit} offset {offset}""", (f"%{valor_chave}%",))

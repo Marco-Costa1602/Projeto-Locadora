@@ -1,18 +1,14 @@
+import random
+import uuid
+
 from flask import Flask, jsonify, request
-<<<<<<< Updated upstream
-=======
-from main import query, execute
->>>>>>> Stashed changes
-from serializer import genero_name_web, genero_name_db, diretor_name_web, diretor_name_db, nome_diretor_from_web, titulo_filme_from_web, filme_name_web, filme_name_db, usuario_from_web, usuario_from_db, nome_usuario_from_web, nome_genero_from_web
-from validacao import valida_genero, valida_diretor, valida_filme, valida_usuario
-from models import insert_genero, get_genero, select_genero, delete_genero, update_genero, get_diretor, select_diretor, insert_diretor, delete_diretor, update_diretor, select_filme, delete_fime, update_filme, get_filme, insert_filme, get_usuario, select_usuarios, delete_usuario, update_usuario, insert_usuario
+from serializer import *
+from validacao import valida_genero, valida_diretor, valida_filme, valida_usuario, valida_locacao, valida_pagamento
+from models import *
+from datetime import datetime, timedelta
 
-
-#Serializer serve para validação e formatação
 
 app = Flask(__name__)
-
-tabelas = ('filmes', 'generos', 'locacoes', 'pagamento', 'usuarios', 'diretores')
 
 
 #########################################################################
@@ -138,8 +134,6 @@ def buscar_filme():
     return jsonify(filmes_name_db)
 
 
-
-
 #########################################################################
 ######################################################################### CONTROLLER - Usuários
 @app.route("/usuarios", methods=["POST"])
@@ -181,9 +175,56 @@ def buscar_usuario():
     return jsonify(usuarios_from_db)
 
 
+#########################################################################
+######################################################################### CONTROLLER - LOCAÇÕES
+@app.route("/locacoes", methods=["POST"])
+def fazer_locacao():
+    locacao = locacao_from_web(**request.json['locacao'])
+    pag_tipo = pagamento_from_web(**request.json['pagamento'])
+
+    if valida_pagamento(**pag_tipo) and valida_locacao(**locacao):
+        agora = datetime.now()
+        fim = (agora + timedelta(hours=48))
+        id_locacao = insert_locacao(agora, fim, **locacao)
+        locacao_registrada = get_locacao(id_locacao)
+
+        lista_status = ["aprovado", "em analise", "reprovado"]
+        status = random.choice(lista_status)
+        codigo_pagamento = str(uuid.uuid4())
+        valor = get_filme(locacao["filmes_id"])["preco"]
+        data_pg = datetime.now()
+        locacoes_id = select_locacao_pag(locacao["usuarios_id"])["id"]
+        id_pagamento = insert_pagamento(pag_tipo["tipo"], status, codigo_pagamento, valor, data_pg, locacoes_id)
+        pagamento_registrado = get_pagamento(id_pagamento)
+
+        return jsonify({"pagamento": pagamento_from_db(pagamento_registrado, data_pg), "locação": locacao_from_db(locacao_registrada, agora, fim)})
+    else:
+        return jsonify({"erro": "Falha na locação!"})
+
+
+@app.route("/locacoes/user/<int:id>", methods=["GET"])
+def check_locacao_user_id(id):
+    return jsonify(query(f"Select * from locacoes inner join usuarios on usuarios.id = locacoes.usuarios_id AND usuarios_id = %s", [id,]))
+
+@app.route("/locacoes/<int:id>", methods=["GET"])
+def check_locacao_by_id(id):
+    return jsonify(query(f"Select * from locacoes where locacoes.id = %s;", [id,]))
+
+@app.route("/locacoes/filme/<int:id>", methods=["GET"])
+def check_locacao_filme_id(id):
+    return jsonify(query(f"""select locacoes.id as Locacao_id,
+                         filmes.titulo as Titulo_do_filme,
+                         usuarios.nome_completo as Nome_usuario,
+                         data_inicio as Data_locacao, pagamento.status as Status_pagamento
+                         from locacoes
+                         inner join filmes on filmes.id = locacoes.filmes_id AND filmes_id = %s
+                         inner join usuarios on usuarios.id = locacoes.usuarios_id
+                         inner join pagamento on locacoes.id = pagamento.locacoes_id""", [id,]))
+
+##############################################################################
+##############################################################################
+
+
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", debug=True)
-
-# jsonify({"metodo": request.method})
-

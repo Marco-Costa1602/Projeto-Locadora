@@ -39,6 +39,8 @@ def update(tabela, chave, valor_chave, colunas, vlr_coluna):
 def select(tabela, chave=1, valor_chave=1, limit=100, offset=0):
     return query(f"""SELECT * FROM {tabela} WHERE {chave} = %s LIMIT {limit} offset {offset}""", (valor_chave,))
 
+def select_like(tabela, chave=1, valor_chave=1, limit=100, offset=0):
+    return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s LIMIT {limit} offset {offset}""", (f"%{valor_chave}%",))
 
 def select_like(tabela, chave=1, valor_chave=1, limit=100, offset=0):
     return query(f"""SELECT * FROM {tabela} WHERE {chave} LIKE %s LIMIT {limit} offset {offset}""", (f"%{valor_chave}%",))

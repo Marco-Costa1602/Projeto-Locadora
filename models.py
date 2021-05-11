@@ -12,14 +12,20 @@ def insert_genero(nome):
 def update_genero(id_atual, nome):
     update('generos', 'id', id_atual, ('nome',), [nome,])
 
+def update_genero(id_atual, nome):
+    update('generos', 'id', id_atual, ('nome',), [nome,])
 
 def get_genero(id_genero):
     return select("generos", "id", id_genero)[0]
 
+def get_genero(id_genero):
+    return select("generos", "id", id_genero)[0]
 
 def select_genero(nome):
     return select_like("generos", "nome", nome)
 
+def select_genero(nome):
+    return select_like("generos", "nome", nome)
 
 def delete_genero(id_genero):
     delete("generos", "id", id_genero)

@@ -12,6 +12,9 @@ def genero_name_db(genero):
         "nome": genero["nome"],
     }
 
+def nome_genero_from_web(**kwargs):
+    return kwargs["nome"] if "nome" in kwargs else ""
+
 
 def nome_genero_from_web(**kwargs):
     return kwargs["nome"] if "nome" in kwargs else ""

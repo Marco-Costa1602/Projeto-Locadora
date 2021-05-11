@@ -1,6 +1,6 @@
-#Projeto final - Módulo (2) da Blue
+# Projeto final - Módulo (2) da Blue
 
-##Instalação
+## Instalação
 
 - `pip install mysql-connector-python flask pytest`
 
